@@ -1,6 +1,6 @@
 class Harvester extends Vehiculo {
-  Harvester(float x, float y,int xBoundary,int yBoundary) {
-    super(x, y,xBoundary,yBoundary);
+  Harvester(float x, float y) {
+    super(x, y);
   }
 
   void mostrar() {
@@ -17,7 +17,7 @@ class Harvester extends Vehiculo {
 
   void mover() {
     x += velocidad;
-    if (x >= xBoundary-1) {
+    if (x >= width-1) {
       x = 0;
       y += altoCampo;
     }

@@ -1,12 +1,12 @@
 class Tractor extends Vehiculo {
-  Tractor(float x, float y,int xBoundary,int yBoundary) {
-    super(x, y,xBoundary,yBoundary);
+  Tractor(float x, float y) {
+    super(x, y);
   }
 
 
   void mostrar() {
     super.mostrar();
-    ellipse(x, y, anchoCampo, altoCampo); // Representación simple del tractor
+    ellipse(x, y,anchoCampo,altoCampo); // Representación simple del tractor
   }
 
   void moverHacia(float tx, float ty) {
