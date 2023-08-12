@@ -9,9 +9,9 @@ class Harvester extends Vehiculo {
   }
 
   void recolectar() {
-    if (campo[int(x / anchoCampo)][int(y / altoCampo)] == 1) {
+    if (terreno.getEstadoCuadrante(x,y)== 1) {
       trigo++;
-      campo[int(x / anchoCampo)][int(y / altoCampo)] = 0;
+      terreno.setEstadoCuadrante(x,y,0);
     }
   }
 
