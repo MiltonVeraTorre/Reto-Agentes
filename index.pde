@@ -15,11 +15,13 @@ Terreno terreno;
 
 Granero granero;
 
-// Declara un objeto Harvester llamado harvester.
-Harvester harvester;
+// Declaramos los harvesters.
+Harvester harvester1;
+Harvester harvester2;
 
-// Declara un objeto Tractor llamado tractor.
-Tractor tractor;
+// Declaramos los tractores
+Tractor tractor1;
+Tractor tractor2;
 
 
 
@@ -27,6 +29,8 @@ Tractor tractor;
 void setup() {
   // Establece el tamaño de la ventana de visualización a 400x400 píxeles.
   size(1200, 1200);
+
+
 
   // colocamos las imagenes
 
@@ -46,10 +50,12 @@ void setup() {
 
 
   // Inicializa el objeto harvester en la posición (0,0) y con el tamaño de celda especificado.
-  harvester = new Harvester(0, 0,5000,50);
+  harvester1 = new Harvester(500, 600,5000,50,1);
+  harvester2 = new Harvester(700, 600,5000,50,2);
 
   // Inicializa el objeto tractor en la posición (0, height - pixeles) y con el tamaño de celda especificado.
-  tractor = new Tractor(0, height - pixeles,5000,150);
+  tractor1 = new Tractor(600,600,5000,150);
+  tractor2 = new Tractor(600,600,5000,150);
 }
 
 // La función draw() se ejecuta continuamente después de setup().
@@ -67,29 +73,48 @@ void draw() {
 
 
 
-  // El harvester intenta recolectar trigo de la celda en la que se encuentra.
-  harvester.recolectar();
+    // El harvester intenta recolectar trigo de la celda en la que se encuentra.
+    harvester1.recolectar();
+    harvester2.recolectar();
 
-  // Mueve el harvester a la siguiente posición.
-  harvester.mover();
+    // Mueve el harvester a la siguiente posición.
+    harvester1.mover();
+    harvester2.mover();
 
 
     // Si el harvester ha recolectado 10 unidades de trigo, el tractor se mueve hacia el harvester.
-    if (harvester.trigo >= 5 && !tractor.trigoLleno()) {
-        tractor.seguirHarvester(harvester);
+    if (harvester1.trigo >= 5 && !tractor1.trigoLleno()) {
+        tractor1.seguirHarvester(harvester1);
     }
     //Si ya tiene el trigo lleno lo regresamos a base
-    if(tractor.trigoLleno()){
-        tractor.regresarBase();
+    if(tractor1.trigoLleno()){
+        tractor1.regresarBase();
 
     }
     // Si ya esta en la base entonces vaciamos su trigo
-    if(tractor.enBase()){
-        tractor.vaciarTrigo();
+    if(tractor1.enBase()){
+        tractor1.vaciarTrigo();
     }
 
-    // Muestra el harvester en la ventana.
-  harvester.mostrar();
-  // Muestra el tractor en la ventana.
-  tractor.mostrar();
+    // Si el harvester ha recolectado 10 unidades de trigo, el tractor se mueve hacia el harvester.
+    if (harvester2.trigo >= 5 && !tractor2.trigoLleno()) {
+        tractor2.seguirHarvester(harvester2);
+    }
+    //Si ya tiene el trigo lleno lo regresamos a base
+    if(tractor2.trigoLleno()){
+        tractor2.regresarBase();
+
+    }
+    // Si ya esta en la base entonces vaciamos su trigo
+    if(tractor2.enBase()){
+        tractor2.vaciarTrigo();
+    }
+
+        // Muestra el harvester en la ventana.
+    harvester1.mostrar();
+    harvester2.mostrar();
+    // Muestra el tractor en la ventana.
+    tractor1.mostrar();
+    tractor2.mostrar();
+
 }

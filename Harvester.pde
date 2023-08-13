@@ -2,18 +2,39 @@ class Harvester extends Vehiculo {
   // Variables para que pueda buscar el siguiente trigo
   boolean buscando;
   PVector busqueda;
+  int numero;
+
+  boolean enMedio; // Con esta variable haremos eficiente el caso en que el harvester caiga en medio
+  boolean derecha;
+  boolean izquierda;
+  boolean ladoCompletado;
 
 
-  Harvester(float x, float y,int combustible,int trigoMax) {
+  Harvester(float x, float y,int combustible,int trigoMax,int numero) {
     super(x, y,combustible,trigoMax);
     buscando = false;
     busqueda = new PVector(0,0);
+    this.numero = numero;
   }
+
+  
 
 // Algoritmo de BFS para encontrar el trigo mas cercano
   private PVector trigoMasCercano(PVector inicio){
     // Obtenemos el campo
     int[][] matriz = terreno.getCampo();
+
+    // radio de ignorar
+    float r = 3;
+
+    // Obtenemos el otro harvester
+    Harvester otroHarvester;
+
+    if(numero == 1){
+        otroHarvester = harvester2;
+    }else{
+        otroHarvester = harvester1;
+    }
 
     // Obtenemos el numero de filas y columnas
     int filas = matriz.length;
@@ -36,8 +57,12 @@ class Harvester extends Vehiculo {
     while (cola.size() > 0) {
         PVector celdaActual = cola.remove(0);  // Simula el poll() de una cola
 
-        if (matriz[(int)celdaActual.x][(int)celdaActual.y] == 1) {
-        return new PVector(celdaActual.x*pixeles,celdaActual.y*pixeles);  // Encontraste el trigo más cercano
+        // Calculamos la distancia al otro harvester
+        float distanciaAV = dist(celdaActual.x, celdaActual.y, otroHarvester.x/pixeles, otroHarvester.y/pixeles);
+
+        // Devolvemos el trigo mas cercano que este a un radio seguro del otro harvester
+        if (distanciaAV > r && matriz[(int)celdaActual.x][(int)celdaActual.y] == 1) {
+          return new PVector(celdaActual.x * pixeles, celdaActual.y * pixeles);
         }
 
         for (int i = 0; i < 4; i++) {
@@ -153,40 +178,138 @@ class Harvester extends Vehiculo {
         return;
     }
 
+    
+
     // Si esta en modo de busqueda
     if(buscando){
         haciaCoordenada(busqueda);
         return;
     }
 
+    // Verificamos si esta cerca de otro tractor
+    Harvester otroHarvester;
+
+    if(numero == 1){
+        otroHarvester = harvester2;
+    }else{
+        otroHarvester = harvester1;
+    }
+
+    float distanciaAV = dist(x/pixeles, y/pixeles, otroHarvester.x/pixeles, otroHarvester.y/pixeles);
+
+    // Si esta cerca de otro tractor entonces hya que calcular el trigo mas cercano que no afecte en el radio del otro tractor
+    if(distanciaAV <= 4 && this.combustible > otroHarvester.combustible){
+        PVector trigoCercano = trigoMasCercano(new PVector(int(x/pixeles),int(y/pixeles)));
+
+        // Si ya no hay mas trigos entonces que no haga nada
+        if(trigoCercano == null){
+            return;
+        }
+
+        buscando = true;
+        busqueda = trigoCercano;
+
+        return;
+    }
+
+
+
     // Hacemos variable de si hay trigo en cada lado
 
     boolean[] trigoDireccion = new boolean[4];
 
 
-    trigoDireccion[0] = terreno.getEstadoCuadrante(x,y+pixeles) == 1;
-    trigoDireccion[1] = terreno.getEstadoCuadrante(x+pixeles,y) == 1;
-    trigoDireccion[2] = terreno.getEstadoCuadrante(x,y-pixeles) == 1;
-    trigoDireccion[3] = terreno.getEstadoCuadrante(x-pixeles,y) == 1;
+
+    trigoDireccion[0] = terreno.getEstadoCuadrante(x,y+pixeles-1) == 1;
+    trigoDireccion[1] = terreno.getEstadoCuadrante(x+pixeles-1,y) == 1;
+    trigoDireccion[2] = terreno.getEstadoCuadrante(x,y-pixeles+1) == 1;
+    trigoDireccion[3] = terreno.getEstadoCuadrante(x-pixeles+1,y) == 1;
+
+    // Si toco del lado derecho primero
+    if(derecha && !ladoCompletado){
+      // Si hay trigo nos movemos
+      if(trigoDireccion[1]){
+        moverHacia(1);
+        return;
+      }
+      // Si ya no hay mas trigos desactivamos el modo derecha y marcamos que ya esta el lado completado
+      else{
+        ladoCompletado = true;
+        derecha = false;
+        izquierda=true;
+        return;
+      }
+    }
+
+    // Si toco del lado izquierdo primero
+    if(izquierda && !ladoCompletado){
+      // Si hay trigo nos movemos
+      if(trigoDireccion[3]){
+        moverHacia(3);
+        return;
+      }
+      // Si ya no hay mas trigos desactivamos el modo izquierda y marcamos que ya esta el lado completado
+      else{
+        ladoCompletado = true;
+        izquierda = false;
+        derecha=true;
+        return;
+      }
+    }
+
+    // Si ya se completo el lado entonces nos movemos hacia el otro lado
+    if(ladoCompletado){
+      if(derecha){
+        // Si hay algo en la derecha entonces ya la desactivamos y dejamos el flujo normal
+        if(trigoDireccion[1]){
+          ladoCompletado = false;
+          derecha = false;
+          izquierda = false;
+          return;
+        }
+        // Sino hay nada en la dirección activa nos seguimos moviendo
+        moverHacia(1);
+        return;
+      }
+      if(izquierda){
+        // Si hay algo en la izquierda entonces ya la desactivamos y dejamos el flujo normal
+        if(trigoDireccion[3]){
+          ladoCompletado = false;
+          derecha = false;
+          izquierda = false;
+          return;
+        }
+        // Sino hay nada en la dirección activa nos seguimos moviendo
+        moverHacia(3);
+        return;
+      }
+    }
+
+    // Verificamos el caso de que haya caido en medio de dos trigos despues de la busqueda
+
+    if(trigoDireccion[1] && trigoDireccion[3]){
+       println("Trigo en medio detectado");
+        enMedio = true;
+        // Vemos de que lado nos conviene comenzar
+        if(terreno.irDerecha(x,y)){
+            derecha = true;
+            izquierda = false;
+        }else{
+            derecha = false;
+            izquierda = true;
+        }
+
+        return;
+    }
 
 
     // Verificamos si hacia la direccion que vamos hay trigo
     if(trigoDireccion[direccion]){
-        // Si hay trigo entonces nos movemos a esa direccion
-        // if(direccion == 0){
-        //     moverHacia(0);
-        //     return;
-        // }
         if(direccion == 1){
             moverHacia(1);
 
             return;
         }
-        // if(direccion == 2){
-        //     moverHacia(2);
-
-        //     return;
-        // }
         if(direccion == 3){
             moverHacia(3);
 
@@ -227,7 +350,6 @@ class Harvester extends Vehiculo {
         return;
     }
 
-    print(trigoCercano);
 
     buscando = true;
     busqueda = trigoCercano;

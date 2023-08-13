@@ -51,7 +51,7 @@ class Terreno{
 
     int getEstadoCuadrante(float x,float y){
         // Verificar que no se pase de los limites
-        if(x < 0 || x > width-pixeles || y < 0 || y > height-pixeles){
+        if(x/pixeles < 0 || x/pixeles > width/pixeles-1 || y/pixeles < 0 || y/pixeles > height/pixeles-1){
             return 0;
         }
 
@@ -64,5 +64,34 @@ class Terreno{
 
     int[][] getCampo(){
         return campo;
+    }
+
+    boolean irDerecha(float x,float y){
+
+        // Verificamos cuantos trigos hay a la derecha y en la izquierda
+        int trigosDerecha = 0;
+        int trigosIzquierda = 0;
+
+        // Contamos cuantos trigos hay a la derecha
+        for(int i = int(x/pixeles); i < width/pixeles; i++){
+            if(getEstadoCuadrante((x/pixeles)+i,y) == 1){
+                trigosDerecha++;
+            }else{
+                break;
+            }
+        }
+
+        // Contamos cuantos trigos hay a la izquierda
+        for(int i = int(x/pixeles); i >= 0; i--){
+            if(getEstadoCuadrante((x/pixeles)-i,y) == 1){
+                trigosIzquierda++;
+            }else{
+                break;
+            }
+        }
+
+        // Devolvemos si hay mas en la derecha que en la izquierda
+        return trigosDerecha > trigosIzquierda;
+
     }
 }
