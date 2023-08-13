@@ -20,11 +20,10 @@ class Tractor extends Vehiculo {
   }
 
   boolean trigoLleno(){
-    print(trigo,trigoMax,"\n");
     return trigo >= trigoMax;
   }
 
-  void moverHacia(Harvester harvester) {
+  void seguirHarvester(Harvester harvester) {
     if (x < harvester.x) x += velocidad;
     else if (x > harvester.x) x -= velocidad;
 

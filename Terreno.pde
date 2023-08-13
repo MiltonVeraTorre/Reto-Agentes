@@ -13,6 +13,20 @@ class Terreno{
             campo[i][j] = 1;
             }
         }
+
+        // Establece una línea delimitadora de 0s en el centro verticalmente
+        for (int j = 0; j < height / pixeles; j++) {
+            for (int i = (width / pixeles) / 2 - 1; i <= (width / pixeles) / 2 + 1; i++) {
+                campo[i][j] = 0;
+            }
+        }
+
+        // Establece una línea delimitadora de 0s en el centro horizontalmente
+        for (int i = 0; i < width / pixeles; i++) {
+            for (int j = (height / pixeles) / 2 - 1; j <= (height / pixeles) / 2 + 1; j++) {
+                campo[i][j] = 0;
+            }
+        }
     }
 
     void dibujar(){
@@ -44,5 +58,9 @@ class Terreno{
 
     void setEstadoCuadrante(float x,float y,int estado){
         campo[int(x / pixeles)][int(y / pixeles)] = estado;
+    }
+
+    int[][] getCampo(){
+        return campo;
     }
 }

@@ -40,8 +40,10 @@ void setup() {
 
 // La función draw() se ejecuta continuamente después de setup().
 void draw() {
+
   // Establece el color de fondo de la ventana a un gris claro.
   background(200);
+
 
   // Dibuja el campo en la ventana.
   terreno.dibujar();
@@ -57,12 +59,10 @@ void draw() {
   // Mueve el harvester a la siguiente posición.
   harvester.mover();
 
-  // Muestra el harvester en la ventana.
-  harvester.mostrar();
 
     // Si el harvester ha recolectado 10 unidades de trigo, el tractor se mueve hacia el harvester.
     if (harvester.trigo >= 5 && !tractor.trigoLleno()) {
-        tractor.moverHacia(harvester);
+        tractor.seguirHarvester(harvester);
     }
     //Si ya tiene el trigo lleno lo regresamos a base
     if(tractor.trigoLleno()){
@@ -74,6 +74,8 @@ void draw() {
         tractor.vaciarTrigo();
     }
 
+    // Muestra el harvester en la ventana.
+  harvester.mostrar();
   // Muestra el tractor en la ventana.
   tractor.mostrar();
 }
