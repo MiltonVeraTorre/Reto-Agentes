@@ -5,6 +5,10 @@ int pixeles = 20;
 // Declaramos la variable global de terreno
 Terreno terreno;
 
+// Declaramos la variable global del granero
+
+Granero granero;
+
 // Declara un objeto Harvester llamado harvester.
 Harvester harvester;
 
@@ -22,12 +26,16 @@ void setup() {
 
   terreno = new Terreno(pixeles);
 
+  // Colocamos la posicion del granero
+
+  granero = new Granero(500,800);
+
 
   // Inicializa el objeto harvester en la posición (0,0) y con el tamaño de celda especificado.
-  harvester = new Harvester(0, 0,2500,100);
+  harvester = new Harvester(0, 0,5000,50);
 
   // Inicializa el objeto tractor en la posición (0, height - pixeles) y con el tamaño de celda especificado.
-  tractor = new Tractor(0, height - pixeles,2500,300);
+  tractor = new Tractor(0, height - pixeles,5000,150);
 }
 
 // La función draw() se ejecuta continuamente después de setup().
@@ -37,6 +45,9 @@ void draw() {
 
   // Dibuja el campo en la ventana.
   terreno.dibujar();
+
+  // Dibuja el granero en la ventana.
+  granero.dibujar();
 
 
 
@@ -49,15 +60,15 @@ void draw() {
   // Muestra el harvester en la ventana.
   harvester.mostrar();
 
-  // Si el harvester ha recolectado 10 unidades de trigo, el tractor se mueve hacia el harvester.
-  if (harvester.trigo >= 5 && !tractor.trigoLleno()) {
-    tractor.moverHacia(harvester);
-  }
-  //Si ya tiene el trigo lleno lo regresamos a base
-  if(tractor.trigoLleno()){
-    tractor.regresarBase();
+    // Si el harvester ha recolectado 10 unidades de trigo, el tractor se mueve hacia el harvester.
+    if (harvester.trigo >= 5 && !tractor.trigoLleno()) {
+        tractor.moverHacia(harvester);
+    }
+    //Si ya tiene el trigo lleno lo regresamos a base
+    if(tractor.trigoLleno()){
+        tractor.regresarBase();
 
-  }
+    }
     // Si ya esta en la base entonces vaciamos su trigo
     if(tractor.enBase()){
         tractor.vaciarTrigo();

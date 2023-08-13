@@ -37,7 +37,17 @@ class Harvester extends Vehiculo {
   }
 
   void mostrar() {
-    super.mostrar();
+    float llenado = trigo*100/trigoMax;
+
+    if(llenado >= 0){
+      fill(0,255,0);
+    }
+    if(llenado >= 50){
+      fill(255,255,0);
+    }
+    if(llenado >= 80){
+      fill(255,0,0);
+    }
     rect(x, y, pixeles, pixeles); // Representación simple del harvester
   }
 
@@ -51,6 +61,12 @@ class Harvester extends Vehiculo {
 
   void mover() {
     // ==== Funcionalidad de moverse de manera inteligente
+
+    // Si esta lleno de trigo omitimos la instruccion para ahorrar combustible
+
+    if(trigo >= trigoMax){
+        return;
+    }
 
     // Hacemos variable de si hay trigo en cada lado
 

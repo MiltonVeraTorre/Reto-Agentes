@@ -5,7 +5,17 @@ class Tractor extends Vehiculo {
 
 
   void mostrar() {
-    super.mostrar();
+    float llenado = trigo*100/trigoMax;
+
+    if(llenado >= 0){
+      fill(0,255,0);
+    }
+    if(llenado >= 50){
+      fill(255,255,0);
+    }
+    if(llenado >= 80){
+      fill(255,0,0);
+    }
     ellipse(x, y,pixeles,pixeles); // Representación simple del tractor
   }
 
@@ -30,15 +40,15 @@ class Tractor extends Vehiculo {
   }
 
   void regresarBase(){
-    if (x < 0) x += velocidad;
-    else if (x > width) x -= velocidad;
+    if (x < granero.x) x += velocidad;
+    else if (x > granero.x) x -= velocidad;
 
-    if (y < 0) y += velocidad;
-    else if (y > height) y -= velocidad;
+    if (y < granero.y) y += velocidad;
+    else if (y > granero.y) y -= velocidad;
   }
 
   boolean enBase(){
-    if (x == 0 && y == 0){
+    if (dist(x,y,granero.x,granero.y) < 1){
       return true;
     }
     return false;
