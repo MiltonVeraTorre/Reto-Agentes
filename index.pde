@@ -42,7 +42,7 @@ void setup() {
 
   // Colocamos la posicion del granero
 
-  granero = new Granero(500,800);
+  granero = new Granero(600,600);
 
 
   // Inicializa el objeto harvester en la posición (0,0) y con el tamaño de celda especificado.
