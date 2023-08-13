@@ -7,7 +7,6 @@ class Granero{
     }
 
     void dibujar(){
-        fill(255);
-        ellipse(x,y,pixeles,pixeles);
+        image(contenedorI,x,y);
     }
 }

@@ -35,14 +35,16 @@ class Terreno{
             for (int j = 0; j < height / pixeles; j++) {
             // Si la celda tiene trigo (valor 1), la pinta de verde.
             if (campo[i][j] == 1) {
-                fill(34, 139, 34);
+                
+                image(trigoI,i*pixeles,j*pixeles);
             } 
             // Si la celda no tiene trigo (valor 0), la pinta de marrón.
             else {
-                fill(139, 69, 19);
+                
+                image(tierraI,i*pixeles,j*pixeles);
+
             }
-            // Dibuja la celda en la posición y tamaño correspondiente.
-            rect(i * pixeles, j * pixeles, pixeles, pixeles);
+            
             }
         }
     }

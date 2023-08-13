@@ -5,18 +5,9 @@ class Tractor extends Vehiculo {
 
 
   void mostrar() {
-    float llenado = trigo*100/trigoMax;
+  
+    image(tractorI,x,y); // Textura del tractor
 
-    if(llenado >= 0){
-      fill(0,255,0);
-    }
-    if(llenado >= 50){
-      fill(255,255,0);
-    }
-    if(llenado >= 80){
-      fill(255,0,0);
-    }
-    ellipse(x, y,pixeles,pixeles); // Representación simple del tractor
   }
 
   boolean trigoLleno(){

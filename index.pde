@@ -1,6 +1,12 @@
 // Define el ancho y alto de cada celda del campo en píxeles.
-int pixeles = 20;
+int pixeles = 40;
 
+// Definir las imagenes
+PImage aradoraI;
+PImage contenedorI;
+PImage tierraI;
+PImage tractorI;
+PImage trigoI;
 
 // Declaramos la variable global de terreno
 Terreno terreno;
@@ -20,7 +26,15 @@ Tractor tractor;
 // La función setup() se ejecuta una vez al inicio del programa.
 void setup() {
   // Establece el tamaño de la ventana de visualización a 400x400 píxeles.
-  size(1000, 1000);
+  size(1200, 1200);
+
+  // colocamos las imagenes
+
+  aradoraI = loadImage("aradora.png");
+  contenedorI = loadImage("contenedor.png");
+  tierraI = loadImage("tierra.jpeg");
+  tractorI = loadImage("tractor.png");
+  trigoI = loadImage("trigo.jpeg");
 
   // Inicializamos el terreno
 

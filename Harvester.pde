@@ -132,18 +132,8 @@ class Harvester extends Vehiculo {
   }
 
   void mostrar() {
-    float llenado = trigo*100/trigoMax;
-
-    if(llenado >= 0){
-      fill(0,255,0);
-    }
-    if(llenado >= 50){
-      fill(255,255,0);
-    }
-    if(llenado >= 80){
-      fill(255,0,0);
-    }
-    rect(x, y, pixeles, pixeles); // Representación simple del harvester
+  
+    image(aradoraI,x,y); // Textura del harvester
   }
 
   void recolectar() {
